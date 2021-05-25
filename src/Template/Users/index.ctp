@@ -1,3 +1,4 @@
+<?= $this->Html->link(('Add'), ['action' => 'add']);?>
 <table>
     <thead>
         <tr>
