@@ -21,6 +21,8 @@
                     <?=
                         $this->Html->link(('Detalhes'), ['action' => 'view', $user->id]);
                     ?> |
+                    <!-- <a href="<?= 'users/view/', $user->id ?>">VER</a> -->
+
                     <button>E</button> |
                     <button>D</button>
                 </td>
