@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 
+
 class UsersController extends AppController{
 
     public function index(){
@@ -12,15 +13,25 @@ class UsersController extends AppController{
     }
 
     public function view($id = null){
-       $users = $this->Users->get($id);
-
-       $this->set(compact('users'));
+       $head = $this->Users->get($id);
+       $users = $this->Users->find()->all();
+       $this->set(compact('head', 'users'));
+       $this->render('index');
     }
 
     public function add(){
         $user = $this->Users->newEntity();
-
-        if($this->request->is('post')){
+        if($this->request->getData()['id']){
+            $head = $this->Users->get($this->request->getData()['id']);
+            $head->name = $this->request->getData()['name'];
+            $head->username = $this->request->getData()['username'];
+            $head->email = $this->request->getData()['email'];
+            $head->password = $this->request->getData()['password'];
+            $this->Users->save($head);
+            $this->Flash->success(__("Usuario Alterado"));
+            return $this->redirect(['action' => 'index']);
+        }
+        else{
             $this->Users->patchEntity($user, $this->request->getData());
             if($this->Users->save($user)){
                 $this->Flash->success(__("Usuario Cadastrado"));
@@ -30,7 +41,15 @@ class UsersController extends AppController{
                 $this->Flash->success(__("Usuario Não Cadastrado"));
             }
         }
-        $this->set(compact('user'));
+
+        return $this->redirect(['action' => 'index']);
+    }
+
+    public function delete($id = null){
+        $entity = $this->Users->get($id);
+        $this->Users->delete($entity);
+        $this->Flash->success(__("Usuario Deletado"));
+        return $this->redirect(['action' => 'index']);
     }
 
 

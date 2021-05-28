@@ -55,7 +55,7 @@ Router::scope('/', function (RouteBuilder $routes) {
      * Apply a middleware to the current route scope.
      * Requires middleware to be registered via `Application::routes()` with `registerMiddleware()`
      */
-    $routes->applyMiddleware('csrf');
+    // $routes->applyMiddleware('csrf');
 
     /**
      * Here, we are connecting '/' (base path) to a controller called 'Pages',
@@ -64,6 +64,23 @@ Router::scope('/', function (RouteBuilder $routes) {
      */
     $routes->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
 
+    $routes->post(
+        '/add',
+        ['controller' => 'Users', 'action' => 'add'],
+        'add'
+    );
+
+    $routes->get(
+        '/delete/:id',
+        ['controller' => 'Users', 'action' => 'delete'],
+        'delete'
+    )->setPatterns(['id' => '\d+'])
+    ->setPass(['id']);
+
+    $routes->get('/view/:id',['controller' => 'Users', 'action' => 'view'],'view')->setPatterns(['id' => '\d+'])
+    ->setPass(['id']);
+
+    // $routes->connect('/delete/*', ['controller' => 'Users', 'action' => 'delete'], ['delete']);
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
      */
@@ -89,6 +106,8 @@ Router::scope('/', function (RouteBuilder $routes) {
      * routes you want in your application.
      */
     $routes->fallbacks(DashedRoute::class);
+
+
 });
 
 /**
@@ -102,3 +121,9 @@ Router::scope('/', function (RouteBuilder $routes) {
  * });
  * ```
  */
+
+
+//  Router::scope('/test', function (RouteBuilder $routes) {
+//         // This route only matches on POST requests.
+
+//     });
