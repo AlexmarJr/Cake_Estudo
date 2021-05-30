@@ -44,13 +44,13 @@ use Cake\Routing\Route\DashedRoute;
  *
  */
 Router::defaultRouteClass(DashedRoute::class);
+Router::extensions('json', 'xml');
 
 Router::scope('/', function (RouteBuilder $routes) {
     // Register scoped middleware for in scopes.
     $routes->registerMiddleware('csrf', new CsrfProtectionMiddleware([
         'httpOnly' => true
     ]));
-
     /**
      * Apply a middleware to the current route scope.
      * Requires middleware to be registered via `Application::routes()` with `registerMiddleware()`
@@ -62,12 +62,17 @@ Router::scope('/', function (RouteBuilder $routes) {
      * its action called 'display', and we pass a param to select the view file
      * to use (in this case, src/Template/Pages/home.ctp)...
      */
-    $routes->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
+    $routes->connect('/', ['controller' => 'Users', 'index' => 'display', 'home']);
 
     $routes->post(
         '/add',
         ['controller' => 'Users', 'action' => 'add'],
         'add'
+    );
+    $routes->get(
+        '/ajax_t/*',
+        ['controller' => 'Users', 'action' => 'ajaxCall'],
+        'ajax_t'
     );
 
     $routes->get(
@@ -86,6 +91,7 @@ Router::scope('/', function (RouteBuilder $routes) {
      */
     $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
 
+    
     /**
      * Connect catchall routes for all controllers.
      *

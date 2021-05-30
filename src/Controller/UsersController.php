@@ -7,6 +7,11 @@ use App\Controller\AppController;
 
 class UsersController extends AppController{
 
+    public function initialize(){
+        parent::initialize();
+        $this->loadComponent('RequestHandler'); 
+    }
+
     public function index(){
         $users = $this->Users->find()->all();
         $this->set(compact('users'));
@@ -53,4 +58,10 @@ class UsersController extends AppController{
     }
 
 
+    public function ajaxCall($id){
+        $this->autoRender = false;
+        $entity = $this->Users->get($id);
+        $content = json_encode($entity);
+        return $this->response->withType("application/json")->withStringBody($content);
+    }
 }
