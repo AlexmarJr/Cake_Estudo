@@ -39,7 +39,7 @@
 </table>
 
 
-<form class="navbar-form navbar-left form-signin" action="<?php echo Router::url(['_name' => 'add'])?>" method="post">
+<!-- <form class="navbar-form navbar-left form-signin" action="<?php echo Router::url(['_name' => 'add'])?>" method="post"> -->
 
     <input type="hidden" name='id' id="id"<?php if(isset($head)) : ?> value=" <?= $head->id ?>" <?php endif; ?>>
 
@@ -69,13 +69,13 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save changes</button>
+            <button type="submit" class="btn btn-primary" onclick="post_data()">Save changes</button>
         </div>
         </div>
     </div>
     </div>
-
-</form>
+<!-- 
+</form> -->
 
 
 <?php if(isset($head)) : ?>
@@ -108,6 +108,31 @@
                 $("#email").val(response.email);
                 $("#UserModal").modal('show');
             },
+            error: function (response) {
+                alert('error');
+            }
+        });
+    }
+
+    function post_data(){
+
+        $.ajax({
+            type: 'POST',
+            url: "<?= Router::url(['_name' => 'add']);?>",
+            data: {
+                'name':  $("#name").val(),
+                'username':  $("#username").val(),
+                'email': $('#email').val(),
+                'password': $('#password').val(),
+            },
+            success: function() {
+                $("#UserModal").modal('hide');
+                Swal.fire({
+                    title: 'Success!',
+                    icon: 'success',
+                    confirmButtonText: 'Cool'
+                })
+            }, 
             error: function (response) {
                 alert('error');
             }

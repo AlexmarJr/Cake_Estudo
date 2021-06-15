@@ -64,22 +64,10 @@ Router::scope('/', function (RouteBuilder $routes) {
      */
     $routes->connect('/', ['controller' => 'Users', 'index' => 'display', 'home']);
 
-    $routes->post(
-        '/add',
-        ['controller' => 'Users', 'action' => 'add'],
-        'add'
-    );
-    $routes->get(
-        '/ajax_t/*',
-        ['controller' => 'Users', 'action' => 'ajaxCall'],
-        'ajax_t'
-    );
+    $routes->post('/add',['controller' => 'Users', 'action' => 'add'],'add');
+    $routes->get('/ajax_t/*',['controller' => 'Users', 'action' => 'ajaxCall'],'ajax_t');
 
-    $routes->get(
-        '/delete/:id',
-        ['controller' => 'Users', 'action' => 'delete'],
-        'delete'
-    )->setPatterns(['id' => '\d+'])
+    $routes->get('/delete/:id',['controller' => 'Users', 'action' => 'delete'],'delete')->setPatterns(['id' => '\d+'])
     ->setPass(['id']);
 
     $routes->get('/view/:id',['controller' => 'Users', 'action' => 'view'],'view')->setPatterns(['id' => '\d+'])

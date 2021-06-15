@@ -47,7 +47,7 @@ class UsersController extends AppController{
             }
         }
 
-        return $this->redirect(['action' => 'index']);
+        return 0;
     }
 
     public function delete($id = null){
